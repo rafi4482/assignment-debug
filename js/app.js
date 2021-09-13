@@ -7,7 +7,6 @@ const loadProducts = () => {
 const showProducts = (products) => {
   const allProducts = products.map((pd) => pd);
   for (const product of allProducts) {
-   // const image = product.images;
     const div = document.createElement("div");
     div.classList.add("product");
     div.innerHTML = `<div class="single-product">
@@ -26,31 +25,27 @@ const showProducts = (products) => {
   }
 };
 let count = 0;
+let TotalPrice=0;
 const addToCart = (id, price) => {
   count = count + 1;
   updatePrice("price",  price);
- // const p = parseFloat(price)
   updateTaxAndCharge();
   document.getElementById("total-Products").innerText = count;
   updateTotal(count)
- // document.getElementById("price").innerText = p;
 };
 
 const getInputValue = (id) => {
   const element = document.getElementById(id).innerText;
-  const converted = parseFloat(element);
+  const converted = parseInt(element);
   return converted;
 };
 
 // main price update function
 const updatePrice = (id, value) => {
-  console.log(id)
-  const convertedOldPrice = getInputValue(id);
-  console.log(id)
-  const convertPrice = parseFloat(value);
-  const total = convertedOldPrice + convertPrice;
-  // document.getElementById("price").innerText = p;
-  document.getElementById(id).innerText = Math.round(total);
+  console.log("in updatePrice id="+id)
+  console.log("in updatePrice Price="+value)
+  TotalPrice=TotalPrice+value;
+  document.getElementById(id).innerText = TotalPrice;
 };
 
 // set innerText function
@@ -60,28 +55,27 @@ const setInnerText = (id, value) => {
 
 // update delivery charge and total Tax
 const updateTaxAndCharge = () => {
-  const priceConverted = getInputValue("price");
-  if (priceConverted > 200) {
+  if (TotalPrice > 500) {
+      setInnerText("delivery-charge", 60);
+      setInnerText("total-tax", TotalPrice * 0.4);
+    }
+    else
+    if (TotalPrice > 400) {
+      setInnerText("delivery-charge", 50);
+      setInnerText("total-tax", TotalPrice * 0.3);
+    }
+    else
+    if (TotalPrice > 200) {
     setInnerText("delivery-charge", 30);
-    setInnerText("total-tax", priceConverted * 0.2);
-  }
-  if (priceConverted > 400) {
-    setInnerText("delivery-charge", 50);
-    setInnerText("total-tax", priceConverted * 0.3);
-  }
-  if (priceConverted > 500) {
-    setInnerText("delivery-charge", 60);
-    setInnerText("total-tax", priceConverted * 0.4);
+    setInnerText("total-tax", TotalPrice * 0.2);
   }
 };
 
 //grandTotal update function
-const updateTotal = (count) => {
-  let grandTotal =
-    getInputValue("price") + getInputValue("delivery-charge") +
+const updateTotal = () => {
+  let grandTotal = TotalPrice + getInputValue("delivery-charge") +
     getInputValue("total-tax");
-    
-  grandTotal=grandTotal*count  
-  document.getElementById("total").innerText = grandTotal;
+    console.log("inside updateTotal="+TotalPrice);
+    document.getElementById("total").innerText = grandTotal;
 };
 loadProducts();
