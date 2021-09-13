@@ -15,6 +15,10 @@ body {
   outline: none;
   border: none;
 }
+.input{
+  width: 50%;
+  margin-left: 300px;
+}
 .search-box {
   border: 1px solid rgb(3, 118, 211);
   width: 281px;
